@@ -71,6 +71,26 @@ decrypt. Every state-changing op re-grants `allowThis` + `allow`.
 - Custom `solc` compile script with a node_modules import resolver
   (no Hardhat needed — lightweight, VPS-friendly)
 
+## Wallet Support
+
+The dApp is **wallet-agnostic**:
+
+- **Desktop:** MetaMask, Rabby, Coinbase Wallet, Brave Wallet (any EIP-1193
+  browser extension) — click **Connect Wallet**, pick your extension.
+- **Mobile / Safe (multisig):** WalletConnect — click **Connect Wallet** on a
+  phone (no extension) and scan the QR with MetaMask mobile, Rainbow, Rabby,
+  or a Safe vault.
+
+To enable WalletConnect, set your **WalletConnect Cloud project id** in
+`app/config.js`:
+
+```js
+export const WC_PROJECT_ID = "your_id_from_cloud.walletconnect.com";
+```
+
+(Get a free id at https://cloud.walletconnect.com.) Without it, the dApp still
+works fully on desktop extensions — WalletConnect is an optional mobile path.
+
 ## Run It
 
 ```bash
@@ -83,6 +103,13 @@ node scripts/deploy.js  ConfidentialPayroll
 
 # full narrated demo (3 employees, encrypt → decrypt → claim)
 node scripts/demo.js
+```
+
+### Run the dApp locally
+
+```bash
+python3 -m http.server 8080
+# open http://localhost:8080/  (or the GitHub Pages URL)
 ```
 
 ### Demo output
