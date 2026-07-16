@@ -1,11 +1,14 @@
 import { BrowserProvider, Contract } from "ethers";
 import { createEthersHandleClient } from "@iexec-nox/handle";
+import { EthereumProvider } from "@walletconnect/ethereum-provider";
+import { WC_PROJECT_ID } from "./config.js";
 import deployment from "../deployment.ConfidentialPayroll.json";
 import artifact from "../artifacts/ConfidentialPayroll.json";
 
 const CONTRACT = deployment.address;
 const ABI = artifact.abi;
 const SEPOLIA = 11155111n;
+const RPC = "https://ethereum-sepolia-rpc.publicnode.com";
 
 const $ = (id) => document.getElementById(id);
 const logEl = $("log");
@@ -20,39 +23,79 @@ let provider, signer, contract, handleClient, account;
 $("ctxLink").textContent = CONTRACT;
 $("ctxLink").href = "https://sepolia.etherscan.io/address/" + CONTRACT;
 
-$("connect").onclick = async () => {
-  if (!window.ethereum) return log("❌ MetaMask not found. Install it first.", "");
-  try {
-    provider = new BrowserProvider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    signer = await provider.getSigner();
-    account = await signer.getAddress();
+// ---- Wallet connection (extension OR WalletConnect) ----
+async function connectExtension() {
+  if (!window.ethereum) throw new Error("no_extension");
+  provider = new BrowserProvider(window.ethereum);
+  await provider.send("eth_requestAccounts", []);
+  signer = await provider.getSigner();
+}
 
-    const net = await provider.getNetwork();
-    if (net.chainId !== SEPOLIA) {
-      log("⚠️ Wrong network. Switching to Sepolia…", "");
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0xaa36a7" }],
-        });
-        provider = new BrowserProvider(window.ethereum);
-        signer = await provider.getSigner();
-      } catch {
-        return log("❌ Please switch MetaMask to Sepolia manually.", "");
-      }
+async function connectWalletConnect() {
+  if (!WC_PROJECT_ID || WC_PROJECT_ID === "YOUR_WALLETCONNECT_PROJECT_ID") {
+    throw new Error("no_wc_id");
+  }
+  const wc = await EthereumProvider.init({
+    projectId: WC_PROJECT_ID,
+    chains: [11155111],
+    optionalChains: [],
+    rpcMap: { 11155111: RPC },
+    showQrModal: true,
+    methods: ["eth_sendTransaction", "personal_sign"],
+  });
+  await wc.connect();
+  provider = new BrowserProvider(wc);
+  signer = await provider.getSigner();
+}
+
+async function ensureSepolia() {
+  const net = await provider.getNetwork();
+  if (net.chainId !== SEPOLIA) {
+    log("⚠️ Switching to Sepolia…");
+    try {
+      await window.ethereum?.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0xaa36a7" }],
+      });
+      provider = new BrowserProvider(window.ethereum);
+      signer = await provider.getSigner();
+    } catch {
+      log("⚠️ Please switch to Sepolia manually in your wallet.", "");
     }
+  }
+}
 
+$("connect").onclick = async () => {
+  if ($("connect").disabled) return;
+  $("connect").disabled = true;
+  log("Connecting…");
+  try {
+    try {
+      await connectExtension();
+      log("✅ Extension wallet connected.", "val");
+    } catch (e) {
+      if (e.message !== "no_extension") throw e;
+      log("ℹ️ No browser wallet — trying WalletConnect (mobile/Safe)…");
+      await connectWalletConnect();
+      log("✅ WalletConnect connected.", "val");
+    }
+    await ensureSepolia();
+    account = await signer.getAddress();
     contract = new Contract(CONTRACT, ABI, signer);
     handleClient = await createEthersHandleClient(signer);
 
     $("status").textContent = "Connected: " + account.slice(0, 6) + "…" + account.slice(-4);
     ["assign", "viewSalary", "claim"].forEach((id) => ($(id).disabled = false));
-    $("empAddr").value = account; // convenience: self as employee for demo
-    log("✅ Connected " + account, "val");
-    log("   Network: Sepolia ✓");
+    $("empAddr").value = account;
+    log("   Network: Sepolia ✓  Ready.", "val");
   } catch (e) {
-    log("❌ " + (e.message || e), "");
+    if (e.message === "no_wc_id") {
+      log("❌ WalletConnect not configured. Open in desktop browser with MetaMask/Rabby, or set WC_PROJECT_ID in app/config.js", "");
+    } else {
+      log("❌ " + (e.message || e), "");
+    }
+  } finally {
+    $("connect").disabled = false;
   }
 };
 
@@ -67,7 +110,7 @@ $("assign").onclick = async () => {
       BigInt(salary), "uint256", CONTRACT
     );
     log("   handle: " + handle.slice(0, 22) + "… (only this goes on-chain)");
-    log("   sending addEmployee tx… confirm in MetaMask");
+    log("   sending addEmployee tx… confirm in wallet");
     const tx = await contract.addEmployee(addr, handle, handleProof);
     await tx.wait();
     log("✅ Salary assigned — encrypted on-chain. Plaintext never exposed. 🔒", "val");

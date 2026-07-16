@@ -8,6 +8,7 @@
   "dependencies": {
     "@iexec-nox/handle": "^0.1.0-beta.13",
     "@iexec-nox/nox-protocol-contracts": "^0.2.4",
+    "@walletconnect/ethereum-provider": "^2.23.10",
     "dotenv": "^17.4.2",
     "ethers": "^6.17.0",
     "solc": "^0.8.36",
