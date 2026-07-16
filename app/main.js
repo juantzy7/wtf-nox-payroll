@@ -2,8 +2,8 @@ import { BrowserProvider, Contract } from "ethers";
 import { createEthersHandleClient } from "@iexec-nox/handle";
 import { EthereumProvider } from "@walletconnect/ethereum-provider";
 import { WC_PROJECT_ID } from "./config.js";
-import deployment from "../deployment.ConfidentialPayroll.json";
-import artifact from "../artifacts/ConfidentialPayroll.json";
+import deployment from "../deployment.VeilPay.json";
+import artifact from "../artifacts/VeilPay.json";
 
 const CONTRACT = deployment.address;
 const ABI = artifact.abi;

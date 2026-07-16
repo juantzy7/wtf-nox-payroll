@@ -1,4 +1,4 @@
-# 🔐 ConfidentialPayroll — Private Salaries on a Public Chain
+# 🔐 VeilPay — Private Salaries on a Public Chain
 
 > Built for the **WTF!! Hackathon — Summer Edition** (iExec / Nox)
 > Confidential smart contract layer: **iExec Nox** · Chain: **Ethereum Sepolia**
@@ -12,7 +12,7 @@ That single leak is why real companies won't touch on-chain payroll.
 
 ## The Solution
 
-**ConfidentialPayroll** stores each salary as an **encrypted `euint256`**
+**VeilPay** stores each salary as an **encrypted `euint256`**
 using iExec Nox. Amounts are encrypted off-chain inside an Intel TDX
 enclave; on-chain only a 32-byte *handle* is stored — never the number.
 
@@ -43,7 +43,7 @@ Employee                                     |                    |
    |<----------------------------------------|                    |
 ```
 
-### Contract — `contracts/ConfidentialPayroll.sol`
+### Contract — `contracts/VeilPay.sol`
 
 | Function | Who | What |
 |----------|-----|------|
@@ -59,8 +59,8 @@ decrypt. Every state-changing op re-grants `allowThis` + `allow`.
 
 ## Live Deployment (Sepolia)
 
-- Contract: `0xDA1D18CA8b5f1aDc5735Ff60726F1b4fD1cFEc3B`
-- Explorer: https://sepolia.etherscan.io/address/0xDA1D18CA8b5f1aDc5735Ff60726F1b4fD1cFEc3B
+- Contract: `0x1012B372bA9b9BdB980a0B8D21973eb791CC7473`
+- Explorer: https://sepolia.etherscan.io/address/0x1012B372bA9b9BdB980a0B8D21973eb791CC7473
 
 ## Tech Stack
 
@@ -98,8 +98,8 @@ npm install
 cp .env.example .env          # add PRIVATE_KEY (testnet) + RPC_URL
 
 # compile + deploy
-node scripts/compile.js ConfidentialPayroll
-node scripts/deploy.js  ConfidentialPayroll
+node scripts/compile.js VeilPay
+node scripts/deploy.js  VeilPay
 
 # full narrated demo (3 employees, encrypt → decrypt → claim)
 node scripts/demo.js

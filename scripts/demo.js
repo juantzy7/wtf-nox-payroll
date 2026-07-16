@@ -1,4 +1,4 @@
-// ConfidentialPayroll — narrated CLI demo.
+// VeilPay — narrated CLI demo.
 // Shows a company running private payroll for multiple employees on Sepolia.
 // Salaries are encrypted end-to-end; nothing sensitive appears in plaintext on-chain.
 //
@@ -9,8 +9,8 @@ const path = require("path");
 const { ethers } = require("ethers");
 const { createEthersHandleClient } = require("@iexec-nox/handle");
 
-const DEPLOY = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "deployment.ConfidentialPayroll.json"), "utf8"));
-const ABI = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "artifacts", "ConfidentialPayroll.json"), "utf8")).abi;
+const DEPLOY = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "deployment.VeilPay.json"), "utf8"));
+const ABI = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "artifacts", "VeilPay.json"), "utf8")).abi;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const line = (s = "") => console.log(s);

@@ -1,4 +1,4 @@
-# 🎬 Submission Kit — ConfidentialPayroll (WTF Hackathon)
+# 🎬 Submission Kit — VeilPay (WTF Hackathon)
 
 ## A. Demo Video Script (max 4 min)
 
@@ -6,11 +6,11 @@
 - Laptop dengan MetaMask (network Sepolia), saldo testnet cukup.
 - Buka terminal VPS / atau jalankan lokal: `python3 -m http.server 8080`
   lalu buka `http://localhost:8080/app/index.html`
-- Buka Etherscan contract: `https://sepolia.etherscan.io/address/0xDA1D18CA8b5f1aDc5735Ff60726F1b4fD1cFEc3B`
+- Buka Etherscan contract: `https://sepolia.etherscan.io/address/0x1012B372bA9b9BdB980a0B8D21973eb791CC7473`
 
 **Narasi (baca santai, tunjukin layar):**
 
-> [0:00–0:30] "Halo, ini ConfidentialPayroll — payroll on-chain tapi gajinya
+> [0:00–0:30] "Halo, ini VeilPay — payroll on-chain tapi gajinya
 > rahasia. Masalahnya: payroll biasa di chain, gaji semua orang keliatan
 > publik. Kita benerin itu pakai iExec Nox — gaji terenkripsi, cuma yang
 > berhak yang bisa baca."
@@ -42,11 +42,11 @@ unlisted / atau X native video.
    TIDAK ikut (sudah di .gitignore).
 2. **Buka** https://dorahacks.io/hackathon/wtf-hackathon/buidl → "Submit BUIDL"
 3. Isi:
-   - Project name: `ConfidentialPayroll`
+   - Project name: `VeilPay`
    - Description: copy dari README "The Problem / The Solution"
    - Repo URL: GitHub public
    - Demo video URL (YouTube/X)
-   - Contract address: `0xDA1D18CA8b5f1aDc5735Ff60726F1b4fD1cFEc3B`
+   - Contract address: `0x1012B372bA9b9BdB980a0B8D21973eb791CC7473`
 4. **Post X wajib** (lihat draf C) → sertakan di submission.
 5. Klik submit sebelum **2026-08-01 21:59 UTC**.
 
@@ -57,7 +57,7 @@ unlisted / atau X native video.
 > Payroll on-chain tapi gajinya keliatan publik? Itu bukan payroll, itu
 > pengumuman gaji. 😅
 >
-> Kita bikin @iExec Nox buat benerin: **ConfidentialPayroll** — gaji tiap
+> Kita bikin @iExec Nox buat benerin: **VeilPay** — gaji tiap
 > karyawan terenkripsi di TEE, cuma yang berhak yang bisa baca.
 > Angka nggak pernah ada di plaintext di chain. 🔐
 >

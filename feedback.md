@@ -1,6 +1,6 @@
-# 📝 Feedback on iExec Nox — ConfidentialPayroll (WTF Hackathon)
+# 📝 Feedback on iExec Nox — VeilPay (WTF Hackathon)
 
-This document records our hands-on experience building **ConfidentialPayroll**
+This document records our hands-on experience building **VeilPay**
 on iExec Nox during the WTF!! Hackathon — Summer Edition.
 
 ## What we built
@@ -13,7 +13,7 @@ are private**. This is a direct answer to the brief: take a
 public-by-design pattern (payroll) and add privacy with Nox without
 modifying any underlying protocol.
 
-- Contract: `0xDA1D18CA8b5f1aDc5735Ff60726F1b4fD1cFEc3B` (Sepolia)
+- Contract: `0x1012B372bA9b9BdB980a0B8D21973eb791CC7473` (Sepolia)
 - Stack: Solidity 0.8.36 + ethers v6 + `@iexec-nox/handle` + `@iexec-nox/nox-protocol-contracts`
 
 ## What worked well ✅
@@ -62,4 +62,4 @@ composable. The developer surface is small and pleasant; the two sharp
 edges (ACL routing, gateway latency) are easy to work around once known.
 We'd happily build a production payroll product on this.
 
-— ConfidentialPayroll team
+— VeilPay team
