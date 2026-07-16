@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ConfidentialPayroll · Nox</title>
+<style>
+  :root {
+    --bg:#0b0e14; --card:#141a24; --line:#232c3b; --accent:#f5a623;
+    --accent2:#4da3ff; --ok:#3ddc84; --text:#e6edf3; --muted:#8b98a9;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg);
+    color:var(--text); line-height:1.5;
+  }
+  header {
+    padding:20px 24px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  header h1 { margin:0; font-size:20px; }
+  header h1 span { color:var(--accent); }
+  .sub { color:var(--muted); font-size:13px; }
+  .wrap { max-width:900px; margin:0 auto; padding:24px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media(max-width:720px){ .grid{ grid-template-columns:1fr; } }
+  .card {
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px;
+  }
+  .card h2 { margin:0 0 4px; font-size:16px; }
+  .card p.hint { margin:0 0 16px; color:var(--muted); font-size:13px; }
+  label { display:block; font-size:12px; color:var(--muted); margin:12px 0 4px; }
+  input {
+    width:100%; padding:10px 12px; background:#0d1219; border:1px solid var(--line);
+    border-radius:8px; color:var(--text); font-size:14px;
+  }
+  button {
+    margin-top:16px; width:100%; padding:11px; border:0; border-radius:8px;
+    background:var(--accent); color:#1a1204; font-weight:600; font-size:14px; cursor:pointer;
+  }
+  button.secondary { background:var(--accent2); color:#031326; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  #connect { width:auto; margin:0; padding:9px 16px; }
+  .pill {
+    font-size:12px; color:var(--muted); background:#0d1219; border:1px solid var(--line);
+    border-radius:20px; padding:5px 12px; display:inline-block;
+  }
+  .log {
+    margin-top:24px; background:#0d1219; border:1px solid var(--line); border-radius:10px;
+    padding:14px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px;
+    white-space:pre-wrap; max-height:280px; overflow:auto; color:#cdd9e5;
+  }
+  .val { color:var(--ok); font-weight:600; }
+  a { color:var(--accent2); }
+  .foot { color:var(--muted); font-size:12px; margin-top:20px; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🔐 Confidential<span>Payroll</span></h1>
+    <div class="sub">Private salaries on a public chain — powered by iExec Nox</div>
+  </div>
+  <button id="connect">Connect Wallet</button>
+</header>
+
+<div class="wrap">
+  <div class="pill" id="status">Not connected</div>
+
+  <div class="grid" style="margin-top:16px">
+    <!-- EMPLOYER -->
+    <div class="card">
+      <h2>👔 Employer</h2>
+      <p class="hint">Assign an encrypted salary. The amount is encrypted off-chain in a TEE — never stored in plaintext.</p>
+      <label>Employee address</label>
+      <input id="empAddr" placeholder="0x…" />
+      <label>Salary (secret)</label>
+      <input id="empSalary" type="number" placeholder="5000" />
+      <button id="assign" disabled>Encrypt &amp; Assign Salary</button>
+    </div>
+
+    <!-- EMPLOYEE -->
+    <div class="card">
+      <h2>👩‍💻 Employee</h2>
+      <p class="hint">Decrypt your own salary (gasless, ACL-gated) and claim it. Nobody else can read your figure.</p>
+      <button id="viewSalary" class="secondary" disabled>Decrypt My Salary</button>
+      <button id="claim" disabled>Claim Salary</button>
+    </div>
+  </div>
+
+  <div class="log" id="log">Ready. Connect wallet (Sepolia) to begin.\n</div>
+
+  <div class="foot">
+    Contract: <a id="ctxLink" target="_blank" rel="noopener"></a>
+  </div>
+</div>
+
+<script src="./bundle.js"></script>
+</body>
+</html>
