@@ -10,6 +10,10 @@
     "@iexec-nox/nox-protocol-contracts": "^0.2.4",
     "dotenv": "^17.4.2",
     "ethers": "^6.17.0",
-    "solc": "^0.8.36"
+    "solc": "^0.8.36",
+    "viem": "^2.55.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
   }
 }
