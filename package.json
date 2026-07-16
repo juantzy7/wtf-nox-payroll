@@ -1,0 +1,15 @@
+{
+  "name": "wtf-nox",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "deploy": "node scripts/deploy.js"
+  },
+  "dependencies": {
+    "@iexec-nox/handle": "^0.1.0-beta.13",
+    "@iexec-nox/nox-protocol-contracts": "^0.2.4",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0",
+    "solc": "^0.8.36"
+  }
+}
