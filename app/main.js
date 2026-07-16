@@ -68,6 +68,7 @@ async function ensureSepolia() {
 $("connect").onclick = async () => {
   if ($("connect").disabled) return;
   $("connect").disabled = true;
+  $("connect").innerHTML = '<span class="spinner"></span>Connecting…';
   log("Connecting…");
   try {
     try {
@@ -85,8 +86,11 @@ $("connect").onclick = async () => {
     handleClient = await createEthersHandleClient(signer);
 
     $("status").textContent = "Connected: " + account.slice(0, 6) + "…" + account.slice(-4);
+    $("status").classList.add("ok");
     ["assign", "viewSalary", "claim"].forEach((id) => ($(id).disabled = false));
     $("empAddr").value = account;
+    $("connect").disabled = false;
+    $("connect").textContent = "Connected";
     log("   Network: Sepolia ✓  Ready.", "val");
   } catch (e) {
     if (e.message === "no_wc_id") {
@@ -96,6 +100,9 @@ $("connect").onclick = async () => {
     }
   } finally {
     $("connect").disabled = false;
+    if ($("connect").textContent.includes("Connecting")) {
+      $("connect").textContent = "Connect Wallet";
+    }
   }
 };
 
