@@ -100,8 +100,8 @@
   .devbtn { padding:8px 16px; border-radius:9px; border:1px solid var(--line); background:#fff; font-weight:700; font-size:13px; cursor:pointer; transition:all .15s; color:var(--muted); }
   .devbtn.active { background:var(--grad); color:#fff; border-color:transparent; }
   /* phone frame for mobile mode */
-  .phonewrap { display:none; }
-  .phonewrap.show { display:flex; justify-content:center; }
+  .phonewrap { display:none; opacity:0; transform:translateY(14px); transition:opacity .35s ease, transform .35s ease; }
+  .phonewrap.show { display:flex; justify-content:center; opacity:1; transform:translateY(0); }
   .phone {
     width:380px; max-width:100%; background:#0f141c; border-radius:34px; padding:12px;
     box-shadow:0 20px 50px -20px #7c3aed88; border:2px solid #2a2f45;
@@ -110,7 +110,8 @@
     background:var(--bg); border-radius:24px; padding:14px; max-height:620px; overflow:auto;
   }
   .phone .screen .grid { grid-template-columns:1fr; }
-  .desktopwrap.hide { display:none; }
+  .desktopwrap { transition:opacity .35s ease, transform .35s ease; }
+  .desktopwrap.hide { display:none; opacity:0; transform:translateY(14px); }
 
   /* FOOTER CTA */
   .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
@@ -143,7 +144,7 @@
   <h1>Private salaries on a <span class="hl">public chain.</span></h1>
   <p class="lead">End-to-end encrypted payroll infrastructure. Employers assign salaries, employees decrypt only their own — no amount ever touches the chain in plaintext.</p>
   <div class="cta">
-    <button class="btn btn-primary" onclick="document.getElementById('dapp').scrollIntoView({behavior:'smooth'})">Try VeilPay</button>
+    <button class="btn btn-primary" data-scroll>Try VeilPay</button>
     <a class="btn btn-ghost" href="#how">Learn More</a>
   </div>
 </section>
@@ -248,7 +249,7 @@
   <h2>Ready to pay privately?</h2>
   <p>Deploy VeilPay for your team. Confidential by design, composable by default.</p>
   <div class="cta">
-    <button class="btn btn-primary" onclick="document.getElementById('dapp').scrollIntoView({behavior:'smooth'})">Launch Demo</button>
+    <button class="btn btn-primary" data-scroll>Launch Demo</button>
     <a class="btn btn-ghost" href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank">View Source</a>
   </div>
 </section>
@@ -273,12 +274,23 @@
       document.getElementById('perdesc').textContent = descs[t.dataset.p];
     };
   });
-  // device toggle (desktop / mobile preview)
+  // device toggle (desktop / mobile preview) + auto-detect
   const dD = document.getElementById('devDesktop'), dM = document.getElementById('devMobile');
   const dw = document.getElementById('desktopWrap'), pw = document.getElementById('phoneWrap');
-  dD.onclick = () => { dD.classList.add('active'); dM.classList.remove('active'); dw.classList.remove('hide'); pw.classList.remove('show'); };
-  dM.onclick = () => { dM.classList.add('active'); dD.classList.remove('active'); dw.classList.add('hide'); pw.classList.add('show'); };
+  function setMode(mobile) {
+    if (mobile) { dM.classList.add('active'); dD.classList.remove('active'); dw.classList.add('hide'); pw.classList.add('show'); }
+    else { dD.classList.add('active'); dM.classList.remove('active'); dw.classList.remove('hide'); pw.classList.remove('show'); }
+  }
+  dD.onclick = () => setMode(false);
+  dM.onclick = () => setMode(true);
+  // auto-detect: phone-sized screen → mobile frame by default
+  if (window.matchMedia('(max-width: 768px)').matches) setMode(true);
+
+  // smooth animated scroll for in-page CTAs
+  document.querySelectorAll('[data-scroll]').forEach(b => {
+    b.onclick = () => document.getElementById('dapp').scrollIntoView({behavior:'smooth'});
+  });
 </script>
-<script src="./bundle.js?v=10"></script>
+<script src="./bundle.js?v=11"></script>
 </body>
 </html>
