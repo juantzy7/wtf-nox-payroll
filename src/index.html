@@ -90,7 +90,6 @@
   button.act:disabled { opacity:.45; cursor:not-allowed; }
   .spinner { display:inline-block; width:13px; height:13px; margin-right:7px; vertical-align:-2px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .log { margin-top:24px; background:#0f141c; border:1px solid #1c2430; border-radius:10px; padding:15px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px; white-space:pre-wrap; max-height:240px; overflow:auto; color:#cdd9e5; }
   .val { color:#3ddc84; font-weight:700; }
   .foot { color:var(--muted); font-size:12px; margin-top:20px; text-align:center; }
   .modal { position:fixed; inset:0; background:rgba(16,18,32,.55); backdrop-filter:blur(4px); display:none; z-index:100; overflow-y:auto; padding:24px 16px; }
@@ -339,6 +338,6 @@
   document.getElementById('actClose').onclick = () => { actModal.classList.remove('show'); document.body.style.overflow=''; };
   actModal.onclick = (e) => { if (e.target === actModal) { actModal.classList.remove('show'); document.body.style.overflow=''; } };
 </script>
-<script src="./bundle.js?v=18"></script>
+<script src="./bundle.js?v=19"></script>
 </body>
 </html>
