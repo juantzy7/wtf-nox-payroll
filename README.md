@@ -109,10 +109,9 @@ node scripts/demo.js
 ```
 
 ### Run the dApp locally
-
 ```bash
 python3 -m http.server 8080
-# open http://localhost:8080/  (or the GitHub Pages URL)
+# open http://localhost:8080/  (or just use the live site: https://veilpay.space)
 ```
 
 ### Demo output
@@ -135,6 +134,8 @@ python3 -m http.server 8080
 - **Product-ready shape** — payroll is a concrete institutional use case
   (tags: DeFi, Institutional, Tokenisation).
 - **Composability preserved** — public contract + events, private numbers.
+- **Polished UX** — landing page with persona tabs, "Learn More" deep-dive
+  portal, and an "On-chain Activity" log portal; tx toasts on success/failure.
 
 ## Roadmap
 

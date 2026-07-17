@@ -4,8 +4,7 @@
 
 **Setup before recording:**
 - Laptop dengan MetaMask (network Sepolia), saldo testnet cukup.
-- Buka terminal VPS / atau jalankan lokal: `python3 -m http.server 8080`
-  lalu buka `http://localhost:8080/app/index.html`
+- Buka `https://veilpay.space` (live dApp — desktop wallet MetaMask/Rabby, or scan WalletConnect on mobile)
 - Buka Etherscan contract: `https://sepolia.etherscan.io/address/0x1012B372bA9b9BdB980a0B8D21973eb791CC7473`
 
 **Narasi (baca santai, tunjukin layar):**
