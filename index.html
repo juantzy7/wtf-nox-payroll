@@ -95,24 +95,6 @@
   .foot { color:var(--muted); font-size:12px; margin-top:20px; text-align:center; }
   .sec-title { font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
 
-  /* DEVICE TOGGLE */
-  .devtoggle { display:flex; gap:8px; justify-content:center; margin:10px 0 18px; }
-  .devbtn { padding:8px 16px; border-radius:9px; border:1px solid var(--line); background:#fff; font-weight:700; font-size:13px; cursor:pointer; transition:all .15s; color:var(--muted); }
-  .devbtn.active { background:var(--grad); color:#fff; border-color:transparent; }
-  /* phone frame for mobile mode */
-  .phonewrap { display:none; opacity:0; transform:translateY(14px); transition:opacity .35s ease, transform .35s ease; }
-  .phonewrap.show { display:flex; justify-content:center; opacity:1; transform:translateY(0); }
-  .phone {
-    width:380px; max-width:100%; background:#0f141c; border-radius:34px; padding:12px;
-    box-shadow:0 20px 50px -20px #7c3aed88; border:2px solid #2a2f45;
-  }
-  .phone .screen {
-    background:var(--bg); border-radius:24px; padding:14px; max-height:620px; overflow:auto;
-  }
-  .phone .screen .grid { grid-template-columns:1fr; }
-  .desktopwrap { transition:opacity .35s ease, transform .35s ease; }
-  .desktopwrap.hide { display:none; opacity:0; transform:translateY(14px); }
-
   /* FOOTER CTA */
   .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
   .ctafoot h2 { font-size:26px; margin:0 0 10px; }
@@ -187,55 +169,25 @@
 <!-- DAPP -->
 <div class="sec-title" id="dapp" style="padding:0 28px;max-width:1040px;margin:0 auto">Try the dApp</div>
 <div class="section" style="margin-top:14px">
-
-  <!-- DESKTOP MODE -->
-  <div class="desktopwrap" id="desktopWrap">
-    <div class="pill" id="status">Not connected</div>
-    <p class="hint">Works with any wallet: MetaMask / Rabby / Coinbase (browser extension on desktop), or scan with WalletConnect on mobile (MetaMask mobile, Rainbow, Rabby, Safe). Use the Sepolia test network.</p>
-    <div class="grid">
-      <div class="card">
-        <h2>👔 Employer</h2>
-        <p class="hint">Assign an encrypted salary. The amount is encrypted off-chain in a TEE — never stored in plaintext.</p>
-        <label>Employee address</label>
-        <input id="empAddr" placeholder="0x…" />
-        <label>Salary (secret)</label>
-        <input id="empSalary" type="number" placeholder="5000" />
-        <button class="act" id="assign" disabled>Encrypt &amp; Assign Salary</button>
-      </div>
-      <div class="card">
-        <h2>👩‍💻 Employee</h2>
-        <p class="hint">Decrypt your own salary (gasless, ACL-gated) and claim it. Nobody else can read your figure.</p>
-        <button class="act secondary" id="viewSalary" disabled>Decrypt My Salary</button>
-        <button class="act" id="claim" disabled>Claim Salary</button>
-      </div>
+  <div class="pill" id="status">Not connected</div>
+  <p class="hint">Works with any wallet: MetaMask / Rabby / Coinbase (browser extension on desktop), or scan with WalletConnect on mobile (MetaMask mobile, Rainbow, Rabby, Safe). Use the Sepolia test network.</p>
+  <div class="grid">
+    <div class="card">
+      <h2>👔 Employer</h2>
+      <p class="hint">Assign an encrypted salary. The amount is encrypted off-chain in a TEE — never stored in plaintext.</p>
+      <label>Employee address</label>
+      <input id="empAddr" placeholder="0x…" />
+      <label>Salary (secret)</label>
+      <input id="empSalary" type="number" placeholder="5000" />
+      <button class="act" id="assign" disabled>Encrypt &amp; Assign Salary</button>
+    </div>
+    <div class="card">
+      <h2>👩‍💻 Employee</h2>
+      <p class="hint">Decrypt your own salary (gasless, ACL-gated) and claim it. Nobody else can read your figure.</p>
+      <button class="act secondary" id="viewSalary" disabled>Decrypt My Salary</button>
+      <button class="act" id="claim" disabled>Claim Salary</button>
     </div>
   </div>
-
-  <!-- MOBILE MODE (phone frame) -->
-  <div class="phonewrap" id="phoneWrap">
-    <div class="phone"><div class="screen">
-      <div class="pill" id="statusM">Not connected</div>
-      <p class="hint">Scan with WalletConnect (MetaMask mobile, Rainbow, Rabby, Safe). Sepolia testnet.</p>
-      <div class="grid">
-        <div class="card">
-          <h2>👔 Employer</h2>
-          <p class="hint">Assign an encrypted salary. Encrypted off-chain in a TEE.</p>
-          <label>Employee address</label>
-          <input id="empAddrM" placeholder="0x…" />
-          <label>Salary (secret)</label>
-          <input id="empSalaryM" type="number" placeholder="5000" />
-          <button class="act" id="assignM" disabled>Encrypt &amp; Assign Salary</button>
-        </div>
-        <div class="card">
-          <h2>👩‍💻 Employee</h2>
-          <p class="hint">Decrypt your own salary (gasless, ACL-gated).</p>
-          <button class="act secondary" id="viewSalaryM" disabled>Decrypt My Salary</button>
-          <button class="act" id="claimM" disabled>Claim Salary</button>
-        </div>
-      </div>
-    </div></div>
-  </div>
-
   <div class="log" id="log">Ready. Connect wallet (Sepolia) to begin.\n</div>
   <div class="foot">Contract: <a id="ctxLink" target="_blank" rel="noopener"></a></div>
 </div>
@@ -270,19 +222,11 @@
       document.getElementById('perdesc').textContent = descs[t.dataset.p];
     };
   });
-  // device auto-detect (no manual toggle): phone → mobile frame, else desktop
-  const dw = document.getElementById('desktopWrap'), pw = document.getElementById('phoneWrap');
-  if (window.matchMedia('(max-width: 768px)').matches) {
-    dw.classList.add('hide'); pw.classList.add('show');
-  } else {
-    dw.classList.remove('hide'); pw.classList.remove('show');
-  }
-
   // smooth animated scroll for in-page CTAs
   document.querySelectorAll('[data-scroll]').forEach(b => {
     b.onclick = () => document.getElementById('dapp').scrollIntoView({behavior:'smooth'});
   });
 </script>
-<script src="./bundle.js?v=12"></script>
+<script src="./bundle.js?v=13"></script>
 </body>
 </html>
