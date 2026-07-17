@@ -290,54 +290,72 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="./bundle.js?v=20"></script>
 <script>
-  // global toast popup
-  function toast(title, msg, ok=true) {
-    const box = document.getElementById('toast');
-    const el = document.createElement('div');
-    el.className = 't ' + (ok ? 'ok' : 'err');
-    el.innerHTML = '<span class="ti">' + title + '</span>' + (msg ? msg : '');
-    box.appendChild(el);
-    requestAnimationFrame(() => el.classList.add('show'));
-    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 350); }, 4200);
-  }
-  window.toast = toast;
-</script>
+  (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
 
-<script>
-  // lightweight persona tabs
-  const descs = {
-    emp: "Assign encrypted salaries to your team. The amount is encrypted off-chain in a TEE — only a 32-byte handle ever lands on-chain.",
-    emp2: "Decrypt your own salary anytime — gasless, ACL-gated. Only you can unlock your figure; claim resets it to zero."
-  };
-  document.querySelectorAll('.ptab').forEach(t => {
-    t.onclick = () => {
-      document.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
-      t.classList.add('active');
-      document.getElementById('perdesc').textContent = descs[t.dataset.p];
+    // toast
+    function toast(title, msg, ok) {
+      ok = ok !== false;
+      var box = $("toast"); if (!box) return;
+      var el = document.createElement("div");
+      el.className = "t " + (ok ? "ok" : "err");
+      el.innerHTML = '<span class="ti"></span>' + (msg || "");
+      el.querySelector(".ti").textContent = title;
+      box.appendChild(el);
+      requestAnimationFrame(function () { el.classList.add("show"); });
+      setTimeout(function () { el.classList.remove("show"); setTimeout(function () { el.remove(); }, 350); }, 4200);
+    }
+    window.toast = toast;
+
+    // persona tabs
+    var descs = {
+      emp: "Assign encrypted salaries to your team. The amount is encrypted off-chain in a TEE — only a 32-byte handle ever lands on-chain.",
+      emp2: "Decrypt your own salary anytime — gasless, ACL-gated. Only you can unlock your figure; claim resets it to zero."
     };
-  });
-  // smooth animated scroll for in-page CTAs
-  document.querySelectorAll('[data-scroll]').forEach(b => {
-    b.onclick = () => document.getElementById('dapp').scrollIntoView({behavior:'smooth'});
-  });
+    document.querySelectorAll(".ptab").forEach(function (t) {
+      t.onclick = function () {
+        document.querySelectorAll(".ptab").forEach(function (x) { x.classList.remove("active"); });
+        t.classList.add("active");
+        var pd = $("perdesc"); if (pd) pd.textContent = descs[t.dataset.p];
+      };
+    });
 
-  // Learn More modal
-  const lm = document.getElementById('learnModal');
-  document.getElementById('learnMore').onclick = (e) => { e.preventDefault(); lm.classList.add('show'); document.body.style.overflow='hidden'; };
-  document.getElementById('learnClose').onclick = () => { lm.classList.remove('show'); document.body.style.overflow=''; };
-  lm.onclick = (e) => { if (e.target === lm) { lm.classList.remove('show'); document.body.style.overflow=''; } };
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lm.classList.remove('show'); document.body.style.overflow=''; } });
+    // smooth scroll CTAs
+    document.querySelectorAll("[data-scroll]").forEach(function (b) {
+      b.onclick = function () { var d = $("dapp"); if (d) d.scrollIntoView({ behavior: "smooth" }); };
+    });
 
-  // On-chain Activity modal — also mirror the dApp log here
-  const actModal = document.getElementById('actModal');
-  const logEl = document.getElementById('log');
-  const log2El = document.getElementById('log2');
-  function mirrorLog() { log2El.innerHTML = logEl.innerHTML; }
-  document.getElementById('openActivity').onclick = () => { mirrorLog(); actModal.classList.add('show'); document.body.style.overflow='hidden'; };
-  document.getElementById('actClose').onclick = () => { actModal.classList.remove('show'); document.body.style.overflow=''; };
-  actModal.onclick = (e) => { if (e.target === actModal) { actModal.classList.remove('show'); document.body.style.overflow=''; } };
+    // modal helper
+    function wireModal(modalId, openId, closeId) {
+      var modal = $(modalId), open = $(openId), close = $(closeId);
+      if (!modal || !open) return;
+      open.onclick = function (e) { if (e) e.preventDefault(); modal.classList.add("show"); document.body.style.overflow = "hidden"; };
+      if (close) close.onclick = function () { modal.classList.remove("show"); document.body.style.overflow = ""; };
+      modal.onclick = function (e) { if (e.target === modal) { modal.classList.remove("show"); document.body.style.overflow = ""; } };
+    }
+    wireModal("learnModal", "learnMore", "learnClose");
+    wireModal("actModal", "openActivity", "actClose");
+
+    // mirror log into activity portal
+    var actModal = $("actModal");
+    if (actModal) {
+      var openBtn = $("openActivity");
+      if (openBtn) openBtn.addEventListener("click", function () {
+        var l1 = $("log"), l2 = $("log2");
+        if (l1 && l2) l2.innerHTML = l1.innerHTML;
+      });
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        ["learnModal", "actModal"].forEach(function (id) { var m = $(id); if (m) { m.classList.remove("show"); } });
+        document.body.style.overflow = "";
+      }
+    });
+  })();
 </script>
-<script src="./bundle.js?v=19"></script>
+
 </body>
 </html>
