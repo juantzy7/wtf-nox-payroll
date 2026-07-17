@@ -122,6 +122,13 @@
 
   /* ACTIVITY MODAL (reuses .modal) */
   .modal-box .log2 { margin-top:8px; background:#0f141c; border:1px solid #1c2430; border-radius:10px; padding:15px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px; white-space:pre-wrap; max-height:46vh; overflow:auto; color:#cdd9e5; }
+  /* ACCOUNT MODAL (small) */
+  .modal-box.acc { max-width:420px; padding:28px 28px 30px; text-align:center; }
+  .modal-box.acc .addr { font-family:ui-monospace,monospace; font-size:14px; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px; margin:14px 0 18px; word-break:break-all; }
+  .modal-box.acc .row { display:flex; gap:10px; }
+  .modal-box.acc .row button { flex:1; padding:11px; border-radius:10px; border:1px solid var(--line); font-weight:700; font-size:13.5px; cursor:pointer; }
+  .modal-box.acc .row .disc { background:#fff; color:#dc2626; border-color:#f0c4c4; }
+  .modal-box.acc .row .chg { background:var(--grad); color:#fff; border:0; }
 
   /* FOOTER CTA */
   .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
@@ -281,6 +288,19 @@
   </div>
 </div>
 
+<!-- ACCOUNT MODAL -->
+<div class="modal" id="accModal">
+  <div class="modal-box acc">
+    <button class="x" id="accClose">✕</button>
+    <h2>Wallet connected</h2>
+    <div class="addr" id="accAddr">0x…</div>
+    <div class="row">
+      <button class="disc" id="accDisconnect">Disconnect</button>
+      <button class="chg" id="accChange">Change wallet</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <a href="https://veilpay.space">veilpay.space</a> ·
   <a href="https://x.com/0xVeilPay" target="_blank">@0xVeilPay</a> ·
@@ -290,7 +310,7 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="./bundle.js?v=21"></script>
+<script src="./bundle.js?v=22"></script>
 <script>
   (function () {
     "use strict";
@@ -354,6 +374,36 @@
         document.body.style.overflow = "";
       }
     });
+    // account modal
+    var accModal = $("accModal");
+    if (accModal) {
+      $("status").style.cursor = "pointer";
+      $("status").onclick = function () {
+        if (!account) return;
+        $("accAddr").textContent = account;
+        accModal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      };
+      $("accClose").onclick = function () { accModal.classList.remove("show"); document.body.style.overflow = ""; };
+      accModal.onclick = function (e) { if (e.target === accModal) { accModal.classList.remove("show"); document.body.style.overflow = ""; } };
+      function doDisconnect() {
+        try { if (wcProvider) wcProvider.disconnect(); } catch (e) {}
+        provider = signer = contract = handleClient = account = wcProvider = null;
+        $("status").textContent = "Not connected";
+        $("status").classList.remove("ok");
+        ["assign", "viewSalary", "claim"].forEach(function (id) { $(id).disabled = true; });
+        $("connect").textContent = "Connect Wallet";
+        accModal.classList.remove("show");
+        document.body.style.overflow = "";
+        log("Disconnected.");
+        toast("Disconnected", "Wallet disconnected.");
+      }
+      $("accDisconnect").onclick = doDisconnect;
+      $("accChange").onclick = function () {
+        doDisconnect();
+        setTimeout(function () { $("connect").click(); }, 400);
+      };
+    }
   })();
 </script>
 

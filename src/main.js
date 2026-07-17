@@ -75,18 +75,6 @@ async function ensureSepolia() {
 }
 
 $("connect").onclick = async () => {
-  // already connected → disconnect
-  if (account) {
-    try { if (wcProvider) await wcProvider.disconnect(); } catch {}
-    provider = signer = contract = handleClient = account = wcProvider = null;
-    $("status").textContent = "Not connected";
-    $("status").classList.remove("ok");
-    ["assign", "viewSalary", "claim"].forEach((id) => ($(id).disabled = true));
-    $("connect").textContent = "Connect Wallet";
-    log("Disconnected.");
-    window.toast && window.toast("Disconnected", "Wallet disconnected.");
-    return;
-  }
   if ($("connect").disabled) return;
   $("connect").disabled = true;
   $("connect").innerHTML = '<span class="spinner"></span>Connecting…';
