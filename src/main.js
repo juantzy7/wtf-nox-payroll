@@ -11,11 +11,19 @@ const SEPOLIA = 11155111n;
 const RPC = "https://ethereum-sepolia-rpc.publicnode.com";
 
 const $ = (id) => document.getElementById(id);
-const logEl = $("log");
+// log target: hidden element (mirrored into the Activity portal)
+let logEl = $("log");
+if (!logEl) {
+  logEl = document.createElement("div");
+  logEl.id = "log";
+  logEl.style.display = "none";
+  document.body.appendChild(logEl);
+}
 function log(msg, cls) {
   const span = cls ? `<span class="${cls}">${msg}</span>` : msg;
   logEl.innerHTML += span + "\n";
-  logEl.scrollTop = logEl.scrollHeight;
+  const l2 = document.getElementById("log2");
+  if (l2) l2.innerHTML = logEl.innerHTML;
 }
 
 let provider, signer, contract, handleClient, account;

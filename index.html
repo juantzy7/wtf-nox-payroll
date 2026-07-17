@@ -218,7 +218,6 @@
       <button class="act" id="claim" disabled>Claim Salary</button>
     </div>
   </div>
-  <div class="log" id="log">Ready. Connect wallet (Sepolia) to begin.\n</div>
   <div class="foot">Contract: <a id="ctxLink" target="_blank" rel="noopener"></a></div>
   <div style="margin-top:14px; text-align:center">
     <button class="btn btn-ghost" id="openActivity" style="display:inline-block;padding:9px 18px;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer">📜 On-chain Activity</button>
@@ -341,6 +340,6 @@
   document.getElementById('actClose').onclick = () => { actModal.classList.remove('show'); document.body.style.overflow=''; };
   actModal.onclick = (e) => { if (e.target === actModal) { actModal.classList.remove('show'); document.body.style.overflow=''; } };
 </script>
-<script src="./bundle.js?v=16"></script>
+<script src="./bundle.js?v=17"></script>
 </body>
 </html>
