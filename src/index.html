@@ -9,8 +9,8 @@
   :root {
     --bg:#f7f8fb; --card:#ffffff; --line:#e6e8ef; --accent:#7c3aed;
     --accent2:#2f6fed; --ok:#1a9d5a; --text:#16182a; --muted:#6b7280;
-    --shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
     --grad:linear-gradient(135deg,#7c3aed,#4f46e5);
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
   }
   * { box-sizing:border-box; }
   body { margin:0; font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
@@ -18,56 +18,59 @@
   a:hover { text-decoration:underline; }
 
   /* NAV */
-  header {
-    padding:14px 28px; border-bottom:1px solid var(--line); background:#fff;
-    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; box-shadow:var(--shadow);
-  }
+  header { padding:14px 28px; border-bottom:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; box-shadow:var(--shadow); position:sticky; top:0; z-index:50; }
   .brand { display:flex; align-items:center; gap:11px; }
   .brand img { height:38px; border-radius:9px; }
   .brand .name { font-size:19px; font-weight:800; letter-spacing:-.4px; }
   .brand .name span { color:var(--accent); }
-  nav { display:flex; gap:22px; align-items:center; flex-wrap:wrap; }
+  nav { display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
   nav a { color:var(--muted); font-size:13.5px; font-weight:600; }
   nav a:hover { color:var(--text); text-decoration:none; }
+  #connect { width:auto; margin:0; padding:9px 18px; background:var(--grad); color:#fff; border:0; border-radius:9px; font-weight:700; font-size:13.5px; cursor:pointer; }
 
   /* HERO */
-  .hero {
-    max-width:1040px; margin:0 auto; padding:54px 28px 30px;
-    display:grid; grid-template-columns:1.15fr .85fr; gap:40px; align-items:center;
-  }
-  @media(max-width:820px){ .hero{ grid-template-columns:1fr; padding:36px 22px; } }
-  .hero h1 { font-size:40px; line-height:1.12; margin:0 0 14px; letter-spacing:-1px; }
+  .hero { max-width:1040px; margin:0 auto; padding:56px 28px 30px; text-align:center; }
+  .badge { display:inline-block; font-size:12px; font-weight:700; color:var(--accent); background:#f3e8ff; border:1px solid #e9d5ff; padding:5px 13px; border-radius:20px; margin-bottom:18px; }
+  .hero h1 { font-size:44px; line-height:1.1; margin:0 0 14px; letter-spacing:-1px; }
   .hero h1 .hl { color:var(--accent); }
-  .hero p.lead { font-size:16px; color:var(--muted); margin:0 0 26px; max-width:520px; }
-  .cta { display:flex; gap:12px; flex-wrap:wrap; }
-  .btn {
-    padding:12px 22px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; border:0; transition:filter .15s, transform .1s;
-  }
+  .hero p.lead { font-size:17px; color:var(--muted); margin:0 auto 28px; max-width:620px; }
+  .cta { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn { padding:12px 24px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer; border:0; transition:filter .15s, transform .1s; }
   .btn:hover { filter:brightness(1.06); }
   .btn:active { transform:translateY(1px); }
   .btn-primary { background:var(--grad); color:#fff; }
   .btn-ghost { background:#fff; color:var(--text); border:1px solid var(--line); }
-  .cube {
-    aspect-ratio:1; border-radius:18px; background:radial-gradient(circle at 30% 25%, #a78bfa55, transparent 60%), var(--grad);
-    display:flex; align-items:center; justify-content:center; box-shadow:0 20px 50px -20px #7c3aed88; position:relative; overflow:hidden;
-  }
-  .cube::after {
-    content:""; position:absolute; inset:0;
-    background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
-    background-size:26px 26px; transform:perspective(400px) rotateX(58deg) scale(1.6); opacity:.5;
-  }
-  .cube .glyph { font-size:54px; z-index:1; filter:drop-shadow(0 4px 10px rgba(0,0,0,.3)); }
 
-  /* FEATURES */
-  .features { max-width:1040px; margin:10px auto 40px; padding:0 28px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-  @media(max-width:820px){ .features{ grid-template-columns:1fr; } }
+  /* PERSONA TABS */
+  .persona { max-width:1040px; margin:30px auto 10px; padding:0 28px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .ptab { padding:10px 20px; border-radius:10px; border:1px solid var(--line); background:#fff; font-weight:700; font-size:14px; cursor:pointer; transition:all .15s; }
+  .ptab.active { background:var(--grad); color:#fff; border-color:transparent; }
+  .perdesc { max-width:720px; margin:14px auto 0; padding:0 28px; text-align:center; color:var(--muted); font-size:15px; min-height:48px; }
+
+  /* STATS */
+  .stats { max-width:1040px; margin:40px auto; padding:18px 28px; background:var(--grad); border-radius:16px; display:flex; gap:24px; justify-content:space-around; flex-wrap:wrap; color:#fff; text-align:center; }
+  .stat .n { font-size:22px; font-weight:800; }
+  .stat .l { font-size:12.5px; opacity:.85; }
+
+  /* SECTION */
+  .section { max-width:1040px; margin:50px auto; padding:0 28px; }
+  .section h2 { font-size:28px; letter-spacing:-.5px; margin:0 0 6px; }
+  .section .sub { color:var(--muted); margin:0 0 28px; }
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media(max-width:820px){ .steps{ grid-template-columns:1fr; } }
+  .step { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:22px; box-shadow:var(--shadow); }
+  .step .num { font-size:13px; font-weight:800; color:var(--accent); }
+  .step h3 { margin:8px 0 6px; font-size:16px; }
+  .step p { margin:0; color:var(--muted); font-size:13.5px; }
+
+  .featgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media(max-width:820px){ .featgrid{ grid-template-columns:1fr; } }
   .feat { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; box-shadow:var(--shadow); }
   .feat .ic { font-size:22px; }
   .feat h3 { margin:10px 0 6px; font-size:15px; }
   .feat p { margin:0; color:var(--muted); font-size:13px; }
 
   /* DAPP */
-  .wrap { max-width:920px; margin:0 auto; padding:10px 24px 40px; }
   .pill { font-size:12.5px; font-weight:600; background:#fff; border:1px solid var(--line); border-radius:20px; padding:6px 14px; display:inline-flex; align-items:center; gap:7px; }
   .pill::before { content:""; width:8px; height:8px; border-radius:50%; background:#c2c7d0; }
   .pill.ok { color:var(--ok); border-color:#bfe6cf; background:#f1fbf5; }
@@ -85,13 +88,19 @@
   button.act:hover:not(:disabled) { filter:brightness(1.05); }
   button.act.secondary { background:var(--accent2); }
   button.act:disabled { opacity:.45; cursor:not-allowed; }
-  #connect { width:auto; margin:0; padding:9px 18px; background:var(--grad); color:#fff; border:0; border-radius:9px; font-weight:700; font-size:13.5px; cursor:pointer; }
   .spinner { display:inline-block; width:13px; height:13px; margin-right:7px; vertical-align:-2px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
   @keyframes spin { to { transform:rotate(360deg); } }
   .log { margin-top:24px; background:#0f141c; border:1px solid #1c2430; border-radius:10px; padding:15px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px; white-space:pre-wrap; max-height:240px; overflow:auto; color:#cdd9e5; }
   .val { color:#3ddc84; font-weight:700; }
   .foot { color:var(--muted); font-size:12px; margin-top:20px; text-align:center; }
-  .section-title { max-width:1040px; margin:0 auto; padding:0 28px; font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+  .sec-title { font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+
+  /* FOOTER CTA */
+  .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
+  .ctafoot h2 { font-size:26px; margin:0 0 10px; }
+  .ctafoot p { color:var(--muted); margin:0 0 22px; }
+  footer { border-top:1px solid var(--line); padding:24px 28px; text-align:center; color:var(--muted); font-size:13px; }
+  footer a { margin:0 8px; }
 </style>
 </head>
 <body>
@@ -103,8 +112,8 @@
     <div class="name">Veil<span>Pay</span></div>
   </div>
   <nav>
-    <a href="#features">Features</a>
     <a href="#how">How it works</a>
+    <a href="#features">Why</a>
     <a href="#dapp">App</a>
     <a href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank">Docs</a>
     <button id="connect">Connect Wallet</button>
@@ -113,35 +122,56 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div>
-    <h1>Private salaries on a <span class="hl">public chain.</span></h1>
-    <p class="lead">End-to-end encrypted payroll infrastructure built with iExec Nox. Employers assign salaries, employees decrypt only their own — no amount ever touches the chain in plaintext.</p>
-    <div class="cta">
-      <button class="btn btn-primary" onclick="document.getElementById('dapp').scrollIntoView({behavior:'smooth'})">Get Started</button>
-      <a class="btn btn-ghost" href="#how">Learn More</a>
-    </div>
+  <div class="badge">🔐 Built on iExec Nox · Ethereum Sepolia</div>
+  <h1>Private salaries on a <span class="hl">public chain.</span></h1>
+  <p class="lead">End-to-end encrypted payroll infrastructure. Employers assign salaries, employees decrypt only their own — no amount ever touches the chain in plaintext.</p>
+  <div class="cta">
+    <button class="btn btn-primary" onclick="document.getElementById('dapp').scrollIntoView({behavior:'smooth'})">Try VeilPay</button>
+    <a class="btn btn-ghost" href="#how">Learn More</a>
   </div>
-  <div class="cube"><div class="glyph">🔐</div></div>
+</section>
+
+<!-- PERSONA TABS -->
+<div class="persona">
+  <div class="ptab active" data-p="emp">👔 I'm an Employer</div>
+  <div class="ptab" data-p="emp2">👩‍💻 I'm an Employee</div>
+</div>
+<div class="perdesc" id="perdesc">Assign encrypted salaries to your team. The amount is encrypted off-chain in a TEE — only a 32-byte handle ever lands on-chain.</div>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat"><div class="n">Sepolia</div><div class="l">Live testnet</div></div>
+  <div class="stat"><div class="n">Verified</div><div class="l">Contract on Etherscan</div></div>
+  <div class="stat"><div class="n">Wallet-agnostic</div><div class="l">MM · Rabby · WC · Safe</div></div>
+  <div class="stat"><div class="n">0</div><div class="l">Plaintext on-chain</div></div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="sec-title" id="how" style="padding:0 28px;max-width:1040px;margin:0 auto">How it works</div>
+<section class="section" style="margin-top:14px">
+  <div class="steps">
+    <div class="step"><div class="num">01 · EMPLOYER</div><h3>Assign encrypted salary</h3><p>Input the amount — it's encrypted off-chain inside an Intel TDX enclave. What hits the chain is just a 32-byte handle, never the number.</p></div>
+    <div class="step"><div class="num">02 · EMPLOYEE</div><h3>Decrypt your own</h3><p>Each employee decrypts only their own salary — gasless, ACL-gated. Nobody else can read the figure.</p></div>
+    <div class="step"><div class="num">03 · CLAIM</div><h3>Reset to zero</h3><p>On claim, the owed balance resets to an encrypted zero. Public infra stays transparent; only the numbers stay private.</p></div>
+  </div>
 </section>
 
 <!-- FEATURES -->
-<div class="section-title" id="features">Why VeilPay</div>
-<section class="features">
-  <div class="feat"><div class="ic">🛡️</div><h3>Encrypted by design</h3><p>Salaries stored as euint256 in a TEE. Plaintext never hits the chain.</p></div>
-  <div class="feat"><div class="ic">🔑</div><h3>You hold the key</h3><p>Employees decrypt only their own figure — gasless, ACL-gated.</p></div>
-  <div class="feat"><div class="ic">🔗</div><h3>Composable</h3><p>Public infra stays transparent. Privacy without breaking DeFi.</p></div>
+<div class="sec-title" id="features" style="padding:0 28px;max-width:1040px;margin:0 auto">Why VeilPay</div>
+<section class="section" style="margin-top:14px">
+  <div class="featgrid">
+    <div class="feat"><div class="ic">🛡️</div><h3>Encrypted by design</h3><p>Salaries stored as euint256 in a TEE. Plaintext never reaches the chain.</p></div>
+    <div class="feat"><div class="ic">🔑</div><h3>You hold the key</h3><p>Employees decrypt only their own figure — gasless, ACL-gated by iExec Nox.</p></div>
+    <div class="feat"><div class="ic">🔗</div><h3>Composable</h3><p>Public infra stays transparent. Privacy without breaking DeFi composability.</p></div>
+  </div>
 </section>
 
 <!-- DAPP -->
-<div class="section-title" id="how">Try the dApp</div>
-<div class="wrap" id="dapp">
+<div class="sec-title" id="dapp" style="padding:0 28px;max-width:1040px;margin:0 auto">Try the dApp</div>
+<div class="section" style="margin-top:14px">
   <div class="pill" id="status">Not connected</div>
-  <p class="hint">
-    Works with any wallet: MetaMask / Rabby / Coinbase (browser extension on desktop),
-    or scan with WalletConnect on mobile (MetaMask mobile, Rainbow, Rabby, Safe). Use the Sepolia test network.
-  </p>
-
-  <div class="grid" style="margin-top:10px">
+  <p class="hint">Works with any wallet: MetaMask / Rabby / Coinbase (browser extension on desktop), or scan with WalletConnect on mobile (MetaMask mobile, Rainbow, Rabby, Safe). Use the Sepolia test network.</p>
+  <div class="grid">
     <div class="card">
       <h2>👔 Employer</h2>
       <p class="hint">Assign an encrypted salary. The amount is encrypted off-chain in a TEE — never stored in plaintext.</p>
@@ -151,7 +181,6 @@
       <input id="empSalary" type="number" placeholder="5000" />
       <button class="act" id="assign" disabled>Encrypt &amp; Assign Salary</button>
     </div>
-
     <div class="card">
       <h2>👩‍💻 Employee</h2>
       <p class="hint">Decrypt your own salary (gasless, ACL-gated) and claim it. Nobody else can read your figure.</p>
@@ -159,12 +188,41 @@
       <button class="act" id="claim" disabled>Claim Salary</button>
     </div>
   </div>
-
   <div class="log" id="log">Ready. Connect wallet (Sepolia) to begin.\n</div>
-
   <div class="foot">Contract: <a id="ctxLink" target="_blank" rel="noopener"></a></div>
 </div>
 
-<script src="./bundle.js?v=8"></script>
+<!-- FOOTER CTA -->
+<section class="ctafoot">
+  <h2>Ready to pay privately?</h2>
+  <p>Deploy VeilPay for your team. Confidential by design, composable by default.</p>
+  <div class="cta">
+    <button class="btn btn-primary" onclick="document.getElementById('dapp').scrollIntoView({behavior:'smooth'})">Launch Demo</button>
+    <a class="btn btn-ghost" href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank">View Source</a>
+  </div>
+</section>
+
+<footer>
+  <a href="https://veilpay.space">veilpay.space</a> ·
+  <a href="https://x.com/0xVeilPay" target="_blank">@0xVeilPay</a> ·
+  <a href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank">GitHub</a>
+  <div style="margin-top:8px">© 2026 VeilPay · Built for WTF!! Hackathon (iExec Nox)</div>
+</footer>
+
+<script>
+  // lightweight persona tabs
+  const descs = {
+    emp: "Assign encrypted salaries to your team. The amount is encrypted off-chain in a TEE — only a 32-byte handle ever lands on-chain.",
+    emp2: "Decrypt your own salary anytime — gasless, ACL-gated. Only you can unlock your figure; claim resets it to zero."
+  };
+  document.querySelectorAll('.ptab').forEach(t => {
+    t.onclick = () => {
+      document.querySelectorAll('.ptab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('perdesc').textContent = descs[t.dataset.p];
+    };
+  });
+</script>
+<script src="./bundle.js?v=9"></script>
 </body>
 </html>
