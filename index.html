@@ -187,10 +187,6 @@
 <!-- DAPP -->
 <div class="sec-title" id="dapp" style="padding:0 28px;max-width:1040px;margin:0 auto">Try the dApp</div>
 <div class="section" style="margin-top:14px">
-  <div class="devtoggle">
-    <button class="devbtn active" id="devDesktop">🖥️ Desktop</button>
-    <button class="devbtn" id="devMobile">📱 Mobile</button>
-  </div>
 
   <!-- DESKTOP MODE -->
   <div class="desktopwrap" id="desktopWrap">
@@ -274,23 +270,19 @@
       document.getElementById('perdesc').textContent = descs[t.dataset.p];
     };
   });
-  // device toggle (desktop / mobile preview) + auto-detect
-  const dD = document.getElementById('devDesktop'), dM = document.getElementById('devMobile');
+  // device auto-detect (no manual toggle): phone → mobile frame, else desktop
   const dw = document.getElementById('desktopWrap'), pw = document.getElementById('phoneWrap');
-  function setMode(mobile) {
-    if (mobile) { dM.classList.add('active'); dD.classList.remove('active'); dw.classList.add('hide'); pw.classList.add('show'); }
-    else { dD.classList.add('active'); dM.classList.remove('active'); dw.classList.remove('hide'); pw.classList.remove('show'); }
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    dw.classList.add('hide'); pw.classList.add('show');
+  } else {
+    dw.classList.remove('hide'); pw.classList.remove('show');
   }
-  dD.onclick = () => setMode(false);
-  dM.onclick = () => setMode(true);
-  // auto-detect: phone-sized screen → mobile frame by default
-  if (window.matchMedia('(max-width: 768px)').matches) setMode(true);
 
   // smooth animated scroll for in-page CTAs
   document.querySelectorAll('[data-scroll]').forEach(b => {
     b.onclick = () => document.getElementById('dapp').scrollIntoView({behavior:'smooth'});
   });
 </script>
-<script src="./bundle.js?v=11"></script>
+<script src="./bundle.js?v=12"></script>
 </body>
 </html>
