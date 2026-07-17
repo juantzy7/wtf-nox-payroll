@@ -95,8 +95,10 @@ $("connect").onclick = async () => {
   } catch (e) {
     if (e.message === "no_wc_id") {
       log("❌ WalletConnect not configured. Open in desktop browser with MetaMask/Rabby, or set WC_PROJECT_ID in app/config.js", "");
+      window.toast && window.toast("WalletConnect not set", "Use desktop wallet or set WC_PROJECT_ID.", false);
     } else {
       log("❌ " + (e.message || e), "");
+      window.toast && window.toast("Connection failed", e.message || String(e), false);
     }
   } finally {
     $("connect").disabled = false;
@@ -121,8 +123,10 @@ $("assign").onclick = async () => {
     const tx = await contract.addEmployee(addr, handle, handleProof);
     await tx.wait();
     log("✅ Salary assigned — encrypted on-chain. Plaintext never exposed. 🔒", "val");
+    window.toast && window.toast("Salary assigned", "Encrypted on-chain — plaintext never exposed 🔒");
   } catch (e) {
     log("❌ " + (e.shortMessage || e.message || e), "");
+    window.toast && window.toast("Assignment failed", e.shortMessage || e.message || String(e), false);
   } finally {
     $("assign").disabled = false;
   }
@@ -138,8 +142,10 @@ $("viewSalary").onclick = async () => {
       catch (e) { if (i === 4) throw e; await new Promise(r => setTimeout(r, 2000)); }
     }
     log("✅ My salary = " + val.toString() + "  (only I can read this)", "val");
+    window.toast && window.toast("Salary decrypted", "Your figure: " + val.toString() + " (only you can read)");
   } catch (e) {
     log("❌ " + (e.message || e), "");
+    window.toast && window.toast("Decrypt failed", e.message || String(e), false);
   }
 };
 
@@ -150,8 +156,10 @@ $("claim").onclick = async () => {
     const tx = await contract.claimSalary();
     await tx.wait();
     log("✅ Claimed. Owed reset to encrypted zero.", "val");
+    window.toast && window.toast("Claimed", "Owed reset to encrypted zero.");
   } catch (e) {
     log("❌ " + (e.shortMessage || e.message || e), "");
+    window.toast && window.toast("Claim failed", e.shortMessage || e.message || String(e), false);
   } finally {
     $("claim").disabled = false;
   }
