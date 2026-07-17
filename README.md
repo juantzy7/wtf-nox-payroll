@@ -2,6 +2,9 @@
 
 > Built for the **WTF!! Hackathon — Summer Edition** (iExec / Nox)
 > Confidential smart contract layer: **iExec Nox** · Chain: **Ethereum Sepolia**
+>
+> 🌐 Live dApp: https://veilpay.space  ·  (fallback) https://juantzy7.github.io/wtf-nox-payroll/
+> 🐦 X: [@0xVeilPay](https://x.com/0xVeilPay)
 
 ## The Problem
 
@@ -82,14 +85,14 @@ The dApp is **wallet-agnostic**:
   or a Safe vault.
 
 To enable WalletConnect, set your **WalletConnect Cloud project id** in
-`app/config.js`:
+`app/config.js` (already configured in the live dApp):
 
 ```js
 export const WC_PROJECT_ID = "your_id_from_cloud.walletconnect.com";
 ```
 
-(Get a free id at https://cloud.walletconnect.com.) Without it, the dApp still
-works fully on desktop extensions — WalletConnect is an optional mobile path.
+(Get a free id at https://cloud.walletconnect.com.) The dApp works on desktop
+extensions out of the box; WalletConnect adds the mobile / Safe path.
 
 ## Run It
 
@@ -114,8 +117,8 @@ python3 -m http.server 8080
 
 ### Demo output
 
-```
-🔐  CONFIDENTIAL PAYROLL — powered by iExec Nox
+```text
+🔐  VEILPAY — powered by iExec Nox
 [1] EMPLOYER assigns encrypted salaries
     • Alice (Engineer)     salary=•••••  handle=0x0000aa36a7230135…  ✅
     • Bob (Designer)       salary=•••••  handle=0x0000aa36a72301a2…  ✅
@@ -138,6 +141,12 @@ python3 -m http.server 8080
 - [ ] ERC-20 funded payouts (encrypted amount → real token transfer)
 - [ ] Per-employee distinct wallets + streaming (Sablier-style)
 - [ ] Web dashboard (employer) + claim page (employee) with MetaMask
+
+## Brand
+
+VeilPay has its own logo and visual identity (shield "V" + padlock, purple
+accent). The app icon, favicon, and brand board live in `assets/`. Social:
+[@0xVeilPay on X](https://x.com/0xVeilPay).
 
 ## License
 
