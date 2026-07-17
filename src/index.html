@@ -113,6 +113,18 @@
   .modal-box .stat-row .s .n { font-size:20px; font-weight:800; color:var(--accent); }
   .modal-box .stat-row .s .l { font-size:12px; color:var(--muted); }
 
+  /* TOAST */
+  .toast { position:fixed; right:18px; bottom:18px; z-index:200; display:flex; flex-direction:column; gap:10px; pointer-events:none; }
+  .toast .t { min-width:240px; max-width:340px; background:#fff; border:1px solid var(--line); border-left:4px solid var(--ok); border-radius:10px; padding:12px 14px; box-shadow:0 10px 30px -10px rgba(0,0,0,.25); font-size:13.5px; opacity:0; transform:translateY(12px); transition:opacity .3s, transform .3s; }
+  .toast .t.show { opacity:1; transform:none; }
+  .toast .t.err { border-left-color:#dc2626; }
+  .toast .t .ti { font-weight:700; display:block; margin-bottom:2px; }
+  .toast .t.ok .ti { color:var(--ok); }
+  .toast .t.err .ti { color:#dc2626; }
+
+  /* ACTIVITY MODAL (reuses .modal) */
+  .modal-box .log2 { margin-top:8px; background:#0f141c; border:1px solid #1c2430; border-radius:10px; padding:15px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px; white-space:pre-wrap; max-height:46vh; overflow:auto; color:#cdd9e5; }
+
   /* FOOTER CTA */
   .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
   .ctafoot h2 { font-size:26px; margin:0 0 10px; }
@@ -208,6 +220,9 @@
   </div>
   <div class="log" id="log">Ready. Connect wallet (Sepolia) to begin.\n</div>
   <div class="foot">Contract: <a id="ctxLink" target="_blank" rel="noopener"></a></div>
+  <div style="margin-top:14px; text-align:center">
+    <button class="btn btn-ghost" id="openActivity" style="display:inline-block;padding:9px 18px;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer">📜 On-chain Activity</button>
+  </div>
 </div>
 
 <!-- FOOTER CTA -->
@@ -259,12 +274,38 @@
   </div>
 </div>
 
+<!-- ACTIVITY MODAL -->
+<div class="modal" id="actModal">
+  <div class="modal-box">
+    <button class="x" id="actClose">✕</button>
+    <h2>On-chain Activity</h2>
+    <p>Live transaction log from the VeilPay contract on Ethereum Sepolia. Salaries are encrypted off-chain; only opaque handles land on-chain.</p>
+    <div class="log2" id="log2">Ready. Connect wallet (Sepolia) to begin.\n</div>
+  </div>
+</div>
+
 <footer>
   <a href="https://veilpay.space">veilpay.space</a> ·
   <a href="https://x.com/0xVeilPay" target="_blank">@0xVeilPay</a> ·
   <a href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank">GitHub</a>
   <div style="margin-top:8px">© 2026 VeilPay · Built for WTF!! Hackathon (iExec Nox)</div>
 </footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // global toast popup
+  function toast(title, msg, ok=true) {
+    const box = document.getElementById('toast');
+    const el = document.createElement('div');
+    el.className = 't ' + (ok ? 'ok' : 'err');
+    el.innerHTML = '<span class="ti">' + title + '</span>' + (msg ? msg : '');
+    box.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 350); }, 4200);
+  }
+  window.toast = toast;
+</script>
 
 <script>
   // lightweight persona tabs
@@ -290,7 +331,16 @@
   document.getElementById('learnClose').onclick = () => { lm.classList.remove('show'); document.body.style.overflow=''; };
   lm.onclick = (e) => { if (e.target === lm) { lm.classList.remove('show'); document.body.style.overflow=''; } };
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lm.classList.remove('show'); document.body.style.overflow=''; } });
+
+  // On-chain Activity modal — also mirror the dApp log here
+  const actModal = document.getElementById('actModal');
+  const logEl = document.getElementById('log');
+  const log2El = document.getElementById('log2');
+  function mirrorLog() { log2El.innerHTML = logEl.innerHTML; }
+  document.getElementById('openActivity').onclick = () => { mirrorLog(); actModal.classList.add('show'); document.body.style.overflow='hidden'; };
+  document.getElementById('actClose').onclick = () => { actModal.classList.remove('show'); document.body.style.overflow=''; };
+  actModal.onclick = (e) => { if (e.target === actModal) { actModal.classList.remove('show'); document.body.style.overflow=''; } };
 </script>
-<script src="./bundle.js?v=14"></script>
+<script src="./bundle.js?v=16"></script>
 </body>
 </html>
