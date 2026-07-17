@@ -93,7 +93,25 @@
   .log { margin-top:24px; background:#0f141c; border:1px solid #1c2430; border-radius:10px; padding:15px; font-family:ui-monospace,'Cascadia Code',monospace; font-size:12.5px; white-space:pre-wrap; max-height:240px; overflow:auto; color:#cdd9e5; }
   .val { color:#3ddc84; font-weight:700; }
   .foot { color:var(--muted); font-size:12px; margin-top:20px; text-align:center; }
-  .sec-title { font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); }
+  /* LEARN MORE MODAL */
+  .modal { position:fixed; inset:0; background:rgba(16,18,32,.55); backdrop-filter:blur(4px); display:none; z-index:100; overflow-y:auto; padding:24px 16px; }
+  .modal.show { display:block; }
+  .modal-box { max-width:760px; margin:0 auto; background:#fff; border-radius:18px; box-shadow:0 30px 70px -20px rgba(0,0,0,.4); padding:34px 34px 40px; animation:pop .25s ease; }
+  @keyframes pop { from { opacity:0; transform:translateY(18px) scale(.98); } to { opacity:1; transform:none; } }
+  .modal-box h2 { font-size:26px; margin:0 0 4px; letter-spacing:-.5px; }
+  .modal-box h3 { font-size:17px; margin:26px 0 8px; color:var(--accent); }
+  .modal-box p { color:#374151; font-size:14.5px; line-height:1.65; margin:0 0 12px; }
+  .modal-box .x { float:right; cursor:pointer; font-size:22px; color:var(--muted); border:0; background:none; line-height:1; }
+  .modal-box table { width:100%; border-collapse:collapse; margin:10px 0 6px; font-size:13.5px; }
+  .modal-box th, .modal-box td { text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); }
+  .modal-box th { color:var(--muted); font-weight:700; }
+  .modal-box .ok { color:var(--ok); font-weight:700; }
+  .modal-box .no { color:#dc2626; font-weight:700; }
+  .modal-box code { background:#f3f4f6; padding:2px 6px; border-radius:5px; font-size:12.5px; }
+  .modal-box .stat-row { display:flex; gap:14px; flex-wrap:wrap; margin:10px 0; }
+  .modal-box .stat-row .s { flex:1; min-width:120px; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:14px; }
+  .modal-box .stat-row .s .n { font-size:20px; font-weight:800; color:var(--accent); }
+  .modal-box .stat-row .s .l { font-size:12px; color:var(--muted); }
 
   /* FOOTER CTA */
   .ctafoot { max-width:1040px; margin:50px auto; padding:40px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; text-align:center; box-shadow:var(--shadow); }
@@ -127,7 +145,7 @@
   <p class="lead">End-to-end encrypted payroll infrastructure. Employers assign salaries, employees decrypt only their own — no amount ever touches the chain in plaintext.</p>
   <div class="cta">
     <button class="btn btn-primary" data-scroll>Try VeilPay</button>
-    <a class="btn btn-ghost" href="#how">Learn More</a>
+    <a class="btn btn-ghost" href="#how" id="learnMore">Learn More</a>
   </div>
 </section>
 
@@ -202,6 +220,45 @@
   </div>
 </section>
 
+<!-- LEARN MORE MODAL -->
+<div class="modal" id="learnModal">
+  <div class="modal-box">
+    <button class="x" id="learnClose">✕</button>
+    <h2>VeilPay — Private Salaries on a Public Chain</h2>
+    <p>VeilPay is confidential payroll infrastructure built on <strong>iExec Nox</strong>. It lets companies run on-chain payroll without exposing any salary in plaintext — solving a privacy gap that blocks real adoption of on-chain compensation.</p>
+
+    <h3>The problem with on-chain payroll</h3>
+    <p>On a normal smart contract, every salary is public forever. Anyone with an explorer can see exactly what each employee earns. That leaks compensation bands to competitors, exposes individuals to targeting, and is a non-starter for real companies. Transparency is good for the ledger — not for people's pay.</p>
+
+    <h3>How VeilPay fixes it (with data)</h3>
+    <p>Each salary is encrypted <strong>off-chain inside an Intel TDX enclave</strong> using the Nox SDK. What lands on-chain is only a <code>32-byte handle</code> — a pointer to encrypted state, never the number. The contract stores an <code>euint256</code>; the plaintext never exists on-chain.</p>
+    <div class="stat-row">
+      <div class="s"><div class="n">0</div><div class="l">salary bytes in plaintext on-chain</div></div>
+      <div class="s"><div class="n">32 B</div><div class="l">handle stored per salary</div></div>
+      <div class="s"><div class="n">2,866</div><div class="l">contract bytecode (bytes)</div></div>
+      <div class="s"><div class="n">23700</div><div class="l">demo total decrypted (test)</div></div>
+    </div>
+
+    <h3>Public vs Private</h3>
+    <table>
+      <tr><th>Aspect</th><th>Plain contract</th><th>VeilPay (Nox)</th></tr>
+      <tr><td>Salary visible on explorer</td><td class="no">Yes</td><td class="ok">No (handle only)</td></tr>
+      <tr><td>Employee reads own pay</td><td class="ok">Yes</td><td class="ok">Yes (gasless, ACL)</td></tr>
+      <tr><td>Third party reads pay</td><td class="no">Yes</td><td class="ok">No</td></tr>
+      <tr><td>Contract / events transparent</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+      <tr><td>Composable with DeFi</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+    </table>
+
+    <h3>Why it matters</h3>
+    <p>Privacy and composability are usually framed as a trade-off. VeilPay shows they aren't: the public infrastructure (contract, events, ERC-20 rails) stays fully transparent and composable — only the <em>numbers</em> are private. That's the exact shape the WTF challenge asked for: take something public-by-design and add privacy with Nox, without breaking composability.</p>
+
+    <h3>The flow</h3>
+    <p><strong>01 Employer</strong> assigns an encrypted salary → <strong>02 Employee</strong> decrypts only their own (gasless, ACL-gated) → <strong>03 Claim</strong> resets the owed balance to an encrypted zero. Try it live in the dApp below, or read the source on GitHub.</p>
+
+    <p style="margin-top:18px"><a class="btn btn-primary" href="https://github.com/juantzy7/wtf-nox-payroll" target="_blank" style="display:inline-block;padding:10px 20px;border-radius:9px;background:var(--grad);color:#fff;font-weight:700">View source on GitHub</a></p>
+  </div>
+</div>
+
 <footer>
   <a href="https://veilpay.space">veilpay.space</a> ·
   <a href="https://x.com/0xVeilPay" target="_blank">@0xVeilPay</a> ·
@@ -226,7 +283,14 @@
   document.querySelectorAll('[data-scroll]').forEach(b => {
     b.onclick = () => document.getElementById('dapp').scrollIntoView({behavior:'smooth'});
   });
+
+  // Learn More modal
+  const lm = document.getElementById('learnModal');
+  document.getElementById('learnMore').onclick = (e) => { e.preventDefault(); lm.classList.add('show'); document.body.style.overflow='hidden'; };
+  document.getElementById('learnClose').onclick = () => { lm.classList.remove('show'); document.body.style.overflow=''; };
+  lm.onclick = (e) => { if (e.target === lm) { lm.classList.remove('show'); document.body.style.overflow=''; } };
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { lm.classList.remove('show'); document.body.style.overflow=''; } });
 </script>
-<script src="./bundle.js?v=13"></script>
+<script src="./bundle.js?v=14"></script>
 </body>
 </html>
