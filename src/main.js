@@ -26,7 +26,7 @@ function log(msg, cls) {
   if (l2) l2.innerHTML = logEl.innerHTML;
 }
 
-let provider, signer, contract, handleClient, account;
+let provider, signer, contract, handleClient, account, wcProvider;
 
 $("ctxLink").textContent = CONTRACT;
 $("ctxLink").href = "https://sepolia.etherscan.io/address/" + CONTRACT;
@@ -52,6 +52,7 @@ async function connectWalletConnect() {
     methods: ["eth_sendTransaction", "personal_sign"],
   });
   await wc.connect();
+  wcProvider = wc;
   provider = new BrowserProvider(wc);
   signer = await provider.getSigner();
 }
@@ -74,6 +75,18 @@ async function ensureSepolia() {
 }
 
 $("connect").onclick = async () => {
+  // already connected → disconnect
+  if (account) {
+    try { if (wcProvider) await wcProvider.disconnect(); } catch {}
+    provider = signer = contract = handleClient = account = wcProvider = null;
+    $("status").textContent = "Not connected";
+    $("status").classList.remove("ok");
+    ["assign", "viewSalary", "claim"].forEach((id) => ($(id).disabled = true));
+    $("connect").textContent = "Connect Wallet";
+    log("Disconnected.");
+    window.toast && window.toast("Disconnected", "Wallet disconnected.");
+    return;
+  }
   if ($("connect").disabled) return;
   $("connect").disabled = true;
   $("connect").innerHTML = '<span class="spinner"></span>Connecting…';
